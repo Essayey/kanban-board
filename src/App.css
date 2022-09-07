@@ -13,6 +13,36 @@ body {
   display: flex;
 }
 
+.btn {
+  padding: 5px 10px;
+  border: none;
+  background: #5757ff;
+  border-radius: 5px;
+  color: #eee;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: #f2f8f4;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border: none;
+  overflow: hidden;
+  resize: none;
+  font-size: 16px;
+  color: #48544c;
+  font-weight: 500;
+}
+
+.input:focus {
+  outline: none;
+}
+
+
 /* Sidebar styles */
 
 .Sidebar {
@@ -47,7 +77,7 @@ body {
 /* List styles */
 .List {
   height: fit-content;
-  max-height: 500px;
+  max-height: 100%;
   width: 300px;
 
   background-color: #e6eee9;
@@ -59,7 +89,7 @@ body {
 
 .List__inner {
   padding-right: 5px;
-  max-height: calc(500px - 80px);
+  max-height: calc(80vh - 80px);
   scrollbar-gutter: stable;
   overflow-y: auto;
 }

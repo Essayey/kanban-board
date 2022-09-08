@@ -64,7 +64,10 @@ body {
 /* Board styles */
 
 .Board {
-  width: calc(100vw - 250px);
+  flex: 1;
+  display: flex;
+  overflow: auto;
+
   height: 100vh;
   padding: 15px;
 }
@@ -76,7 +79,7 @@ body {
 
 /* List styles */
 .List {
-  height: fit-content;
+  height: min-content;
   max-height: 100%;
   width: 300px;
 
@@ -89,13 +92,23 @@ body {
 
 .List__inner {
   padding-right: 5px;
-  max-height: calc(80vh - 80px);
+  max-height: calc(90vh - 80px);
   scrollbar-gutter: stable;
   overflow-y: auto;
 }
 
 .List h3 {
   margin-bottom: 15px;
+}
+
+.AddList {
+  width: 300px;
+  height: fit-content;
+
+  background-color: #e6eee9;
+  padding: 10px;
+  border-radius: 5px;
+  color: #48544c;
 }
 
 /* Card styles */
@@ -123,5 +136,17 @@ body {
 
 .CardAdd:hover {
   background-color: #d2d8d4;
+  cursor: pointer;
+}
+
+.Card__buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  background: url('../src/icons/closeIcon.svg');
   cursor: pointer;
 }

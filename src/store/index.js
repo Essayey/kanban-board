@@ -5,26 +5,26 @@ const initialState = {
     boards: [{
         name: 'Board #1',
         lists: [{
-            cards: [{ text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 1" },
-            { text: "Card 2" },
-            { text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 3" }],
+            cards: [{ title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 1" },
+            { title: "card 2" },
+            { title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 3" }],
             listName: "List 1"
         }, {
-            cards: [{ text: "Lorem 1" },
-            { text: "Card 2" },
-            { text: "Card 3" },
-            { text: "Lorem 1" },
-            { text: "Card 2" },
-            { text: "Card 3" }],
+            cards: [{ title: "Lorem 1" },
+            { title: "Card 2" },
+            { title: "Card 3" },
+            { title: "Lorem 1" },
+            { title: "Card 2" },
+            { title: "Card 3" }],
             listName: "List 1"
         }]
     },
     {
         name: 'Board #2',
         lists: [{
-            cards: [{ text: "Card 1" },
-            { text: "Card 2" },
-            { text: "Card 3" }],
+            cards: [{ title: "Card 1" },
+            { title: "Card 2" },
+            { title: "Card 3" }],
             listName: "List 1"
         }]
     }
@@ -107,7 +107,7 @@ const boardReducer = (state = initialState, action) => {
                             name: board.name,
                             lists: board.lists.map((list, listId) => {
                                 if (listId === action.payload.listId) {
-                                    return { listName: list.listName, cards: [...list.cards, { text: action.payload.text }] }
+                                    return { listName: list.listName, cards: [...list.cards, { title: action.payload.text }] }
                                 }
                                 return list;
                             })

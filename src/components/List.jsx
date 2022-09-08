@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { doAddCard, doDeleteCard, doEditCard, doRenameList } from '../store';
+import { doAddCard, doDeleteCard, doDeleteList, doEditCard, doRenameList } from '../store';
 import { useDispatch } from 'react-redux';
 import Card from './Card';
 import AddForm from './AddForm';
@@ -30,6 +30,9 @@ const List = ({ cards, listName, listId }) => {
     const onAddCard = () => {
         setIsCardAdding(true);
     }
+    const deleteList = () => {
+        dispatch(doDeleteList({ boardId: 0, listId }))
+    }
 
     const addCard = text => {
         dispatch(doAddCard({ boardId: 0, listId, text }));
@@ -45,7 +48,10 @@ const List = ({ cards, listName, listId }) => {
                         autoFocus
                         type="text" />
                 </form>
-                : <h3 onClick={() => setIsListRenaming(true)}>{listName}</h3>
+                : <div className='List__header'>
+                    <h3 onClick={() => setIsListRenaming(true)}>{listName}</h3>
+                    <div onClick={deleteList} className='closeIcon'></div>
+                </div>
             }
 
             <div ref={listScrollRef} className='List__inner'>

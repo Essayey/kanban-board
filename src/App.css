@@ -6,6 +6,10 @@
 }
 
 body {
+  color: #48544c;
+}
+
+body {
   background-color: #6f90df;
 }
 
@@ -34,7 +38,7 @@ body {
   overflow: hidden;
   resize: none;
   font-size: 16px;
-  color: #48544c;
+
   font-weight: 500;
 }
 
@@ -86,7 +90,7 @@ body {
   background-color: #ece9e9;
   padding: 10px;
   border-radius: 5px;
-  color: #48544c;
+
   margin-right: 15px;
 }
 
@@ -120,7 +124,7 @@ body {
   padding: 5px;
   font-weight: 700;
   font-size: 18.75px;
-  color: #48544c;
+
   border: none;
   border-radius: 10px;
   outline-color: #5757ff;
@@ -189,4 +193,31 @@ body {
   height: 24px;
   background: url('../src/icons/closeIcon.svg');
   cursor: pointer;
+}
+
+.CloseIcon-abs {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+
+.CardModal__title {
+  width: 95%;
+  padding: 15px;
+  cursor: text;
+  border-radius: 5px;
+
+}
+
+.CardModal__description {
+  padding: 15px;
+}
+
+.CardModal__description h3 {
+  margin-bottom: 15px;
+}
+
+.CardModal__description span {
+  padding: 10px;
 }

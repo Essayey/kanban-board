@@ -133,9 +133,10 @@ const boardReducer = (state = initialState, action) => {
                             lists: board.lists.map((list, listId) => {
                                 if (listId === action.payload.listId) {
                                     return {
+                                        listName: list.listName,
                                         cards: list.cards.map((card, cardId) => {
                                             if (cardId === action.payload.cardId) {
-                                                return action.payload.newText;
+                                                return { title: action.payload.newText };
                                             }
                                             return card;
                                         })

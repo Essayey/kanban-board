@@ -1,0 +1,22 @@
+.ModalContainer {
+    z-index: 1000;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(1, 1, 1, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ModalInner {
+    width: 800px;
+    min-height: 500px;
+    background-color: #ece9e9;
+    border-radius: 5px;
+    padding: 15px;
+    position: relative;
+}

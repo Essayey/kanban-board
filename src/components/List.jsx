@@ -55,9 +55,16 @@ const List = ({ cards, listName, listId }) => {
             }
 
             <div ref={listScrollRef} className='List__inner'>
-                {cards.map((card, index) => <Card key={card.title + index} title={card.title} />)}
+                {cards.map((card, index) => <Card
+                    card={card}
+                    cardId={index}
+                    boardId={0}
+                    listId={listId}
+                    key={card.title + index}
+                    title={card.title} />)}
                 {isCardAdding
                     ? <AddForm
+                        closeAfterSubmit={false}
                         buttonText='Add card'
                         placeholder='Type the title of the card'
                         callback={addCard}

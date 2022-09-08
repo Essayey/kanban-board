@@ -5,13 +5,15 @@ import { doAddCard } from '../store';
 import { resizeTextArea, submitOnEnter } from '../utils';
 
 const AddForm = ({
+    closeAfterSubmit,
     buttonText,
     placeholder,
     closeFormCallback,
     callback,
+    initialValue,
     listScrollRef
 }) => {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(initialValue || '');
 
     const textAreaRef = useRef();
     const formRef = useRef();
@@ -32,6 +34,7 @@ const AddForm = ({
             setValue('');
             textAreaRef.current.style = 'height: auto';
         }
+        if (closeAfterSubmit) closeFormCallback();
     }
 
     const onInput = e => {

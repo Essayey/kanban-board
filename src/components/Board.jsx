@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { doAddList } from '../store'
 import AddForm from './AddForm'
+import CardModal from './CardModal'
 import List from './List'
+import Modal from './UI/Modal window/Modal'
 
 const Board = ({ board }) => {
     const [isListAdding, setIsListAdding] = useState(false);
@@ -25,6 +27,7 @@ const Board = ({ board }) => {
                 {isListAdding
                     ? <div className='AddList'>
                         <AddForm
+                            closeAfterSubmit={true}
                             buttonText='Add list'
                             placeholder='Type the title of the list'
                             closeFormCallback={() => setIsListAdding(false)}
@@ -36,6 +39,7 @@ const Board = ({ board }) => {
                 }
 
             </div>
+
         </div>
     )
 }

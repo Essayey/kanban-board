@@ -1,13 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { doAddCard, doDeleteCard, doEditCard } from '../store';
+import { doAddCard, doDeleteCard, doEditCard, doRenameList } from '../store';
 import { useDispatch } from 'react-redux';
 import Card from './Card';
-import AddCardForm from './AddCardForm';
+import AddForm from './AddForm';
+import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
 
 const List = ({ cards, listName, listId }) => {
     const dispatch = useDispatch();
     const [isCardAdding, setIsCardAdding] = useState(false);
+    const [listNameState, setListNameState] = useState(listName);
+    const [isListRenaming, setIsListRenaming] = useState(false);
     const listScrollRef = useRef();
+
+    const renameFormRef = useRef();
+    useOutsideCallback(() => { setIsListRenaming(false) }, renameFormRef);
+
+    useEscapeCallback(() => { setIsListRenaming(false) });
+
+    const onSubmit = e => {
+        e.preventDefault();
+        dispatch(doRenameList({ newName: listNameState, boardId: 0, listId }));
+    }
 
 
     useEffect(() => {
@@ -18,25 +31,33 @@ const List = ({ cards, listName, listId }) => {
         setIsCardAdding(true);
     }
 
-    const editCard = (newText, boardId, listId, cardId) => {
-        dispatch(doEditCard({ boardId, listId, cardId, newText }));
-    }
-
-    const deleteCard = (boardId, listId, cardId) => {
-        dispatch(doDeleteCard({ boardId, listId, cardId }))
+    const addCard = text => {
+        dispatch(doAddCard({ boardId: 0, listId, text }));
     }
 
     return (
         <div className='List'>
-            <h3>{listName}</h3>
+            {isListRenaming
+                ? <form ref={renameFormRef} onSubmit={onSubmit}>
+                    <input
+                        value={listNameState}
+                        onChange={e => setListNameState(e.target.value)}
+                        autoFocus
+                        type="text" />
+                </form>
+                : <h3 onClick={() => setIsListRenaming(true)}>{listName}</h3>
+            }
+
             <div ref={listScrollRef} className='List__inner'>
-                {cards.map(card => <Card title={card.title} />)}
+                {cards.map((card, index) => <Card key={card.title + index} title={card.title} />)}
                 {isCardAdding
-                    ? <AddCardForm
-                        boardId={0}
-                        listId={listId}
-                        setIsCardAdding={setIsCardAdding}
-                        listScrollRef={listScrollRef} />
+                    ? <AddForm
+                        buttonText='Add card'
+                        placeholder='Type the title of the card'
+                        callback={addCard}
+                        closeFormCallback={() => setIsCardAdding(false)}
+                        listScrollRef={listScrollRef}
+                    />
                     : null
                 }
             </div>

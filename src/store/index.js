@@ -80,8 +80,15 @@ const boardReducer = (state = initialState, action) => {
                     if (index === action.payload.boardId) {
                         return {
                             name: board.name,
-                            lists: [...board.lists,
-                            { cards: [], listName: action.payload.listName }]
+                            lists: board.lists.map((list, index) => {
+                                if (index === action.payload.listId) {
+                                    return {
+                                        listName: action.payload.newName,
+                                        cards: list.cards
+                                    }
+                                }
+                                return list;
+                            })
                         }
                     }
                     return board;

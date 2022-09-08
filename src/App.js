@@ -27,9 +27,7 @@ function App() {
         dispatch(doAddList({ listName, boardId }))
     }
 
-    const renameList = (newName, boardId, listId) => {
-        dispatch(doRenameList({ newName, boardId, listId }))
-    }
+
 
     const deleteList = (boardId, listId) => {
         dispatch(doDeleteList({ boardId, listId }));

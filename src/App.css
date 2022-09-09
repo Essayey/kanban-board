@@ -46,6 +46,11 @@ body {
   outline: none;
 }
 
+.Link-normalize {
+  text-decoration: none;
+  color: #48544c;
+}
+
 
 /* Sidebar styles */
 

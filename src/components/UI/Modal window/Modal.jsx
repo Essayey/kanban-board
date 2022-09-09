@@ -1,7 +1,12 @@
-import React, { Children } from 'react'
+import React, { useRef } from 'react'
+import { useEscapeCallback, useOutsideCallback } from '../../../hooks/useOutsideCallback';
 import styles from './Modal.module.css';
 
-const Modal = ({ children, closeRef }) => {
+const Modal = ({ children, closeCallback }) => {
+    const closeRef = useRef();
+
+    useOutsideCallback(closeCallback, closeRef);
+    useEscapeCallback(closeCallback);
 
     return (
         <div className={styles.ModalContainer}>

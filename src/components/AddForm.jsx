@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
 import { doAddCard } from '../store';
@@ -17,6 +17,13 @@ const AddForm = ({
 
     const textAreaRef = useRef();
     const formRef = useRef();
+
+    // Set cursor at the end of the text
+    useEffect(() => {
+        textAreaRef.current.setSelectionRange(
+            textAreaRef.current.value.length, textAreaRef.current.value.length
+        );
+    }, [])
 
     const onCloseForm = () => {
         console.log('test')

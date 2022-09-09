@@ -1,36 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import { logging } from './middleware';
-
-const initialState = {
-    boards: [{
-        name: 'Board #1',
-        lists: [{
-            cards: [{ title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 1" },
-            { title: "card 2" },
-            { title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, accusantium. 3" }],
-            listName: "List 1"
-        }, {
-            cards: [{ title: "Lorem 1" },
-            { title: "Card 2" },
-            { title: "Card 3" },
-            { title: "Lorem 1" },
-            { title: "Card 2" },
-            { title: "Card 3" }],
-            listName: "List 1"
-        }]
-    },
-    {
-        name: 'Board #2',
-        lists: [{
-            cards: [{ title: "Card 1" },
-            { title: "Card 2" },
-            { title: "Card 3" }],
-            listName: "List 1"
-        }]
-    }
-    ]
-}
-
+import { initialState } from './initialState';
+import { createReducer } from '@reduxjs/toolkit';
 
 const CREATE_BOARD = 'CREATE_BOARD';
 const RENAME_BOARD = 'RENAME_BOARD';
@@ -39,140 +10,59 @@ const ADD_LIST = 'ADD_LIST';
 const RENAME_LIST = 'RENAME_LIST';
 const DELETE_LIST = 'DELETE_LIST';
 const ADD_CARD = 'ADD_CARD';
-const EDIT_CARD = 'EDIT_CARD';
+const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE';
+const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION';
 const DELETE_CARD = 'DELETE_CARD';
 
+const boardReducer = createReducer(initialState, builder => {
+    builder.addCase(ADD_LIST, (state, action) => {
+        state.boards[action.payload.boardId].lists.push(
+            {
+                cards: [],
+                listName: action.payload.listName
+            }
+        )
+    })
 
-const boardReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case CREATE_BOARD:
-            return { boards: [...state.boards, { name: action.payload.boardName, lists: [] }] }
-        case RENAME_BOARD:
-            return {
-                boards: state.boards.map((board, index) => {
-                    if (index === action.payload.boardId) {
-                        return { name: action.payload.newName, lists: board.lists }
-                    }
-                    return board;
-                })
-            }
-        case DELETE_BOARD:
-            return {
-                boards: state.boards.filter((_, index) => index !== action.payload.boardId)
-            }
+    builder.addCase(RENAME_LIST, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists[action.payload.listId].listName = action.payload.newName;
+    })
 
-        case ADD_LIST:
-            return {
-                boards: state.boards.map((board, index) => {
-                    if (index === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: [...board.lists,
-                            { cards: [], listName: action.payload.listName }]
-                        }
-                    }
-                    return board;
-                })
-            }
-        case RENAME_LIST:
-            return {
-                boards: state.boards.map((board, index) => {
-                    if (index === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: board.lists.map((list, index) => {
-                                if (index === action.payload.listId) {
-                                    return {
-                                        listName: action.payload.newName,
-                                        cards: list.cards
-                                    }
-                                }
-                                return list;
-                            })
-                        }
-                    }
-                    return board;
-                })
-            }
-        case DELETE_LIST:
-            return {
-                boards: state.boards.map((board, boardId) => {
-                    if (boardId === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: board.lists.filter((_, listId) => listId !== action.payload.listId)
-                        }
-                    }
-                    return board;
-                })
-            }
-        case ADD_CARD:
-            return {
-                boards: state.boards.map((board, boardId) => {
-                    if (boardId === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: board.lists.map((list, listId) => {
-                                if (listId === action.payload.listId) {
-                                    return { listName: list.listName, cards: [...list.cards, { title: action.payload.text }] }
-                                }
-                                return list;
-                            })
-                        }
-                    }
-                    return board;
-                })
-            }
+    builder.addCase(DELETE_LIST, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists.splice(action.payload.listId, 1);
+    })
 
-        case EDIT_CARD:
-            return {
-                boards: state.boards.map((board, boardId) => {
-                    if (boardId === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: board.lists.map((list, listId) => {
-                                if (listId === action.payload.listId) {
-                                    return {
-                                        listName: list.listName,
-                                        cards: list.cards.map((card, cardId) => {
-                                            if (cardId === action.payload.cardId) {
-                                                return { title: action.payload.newText };
-                                            }
-                                            return card;
-                                        })
-                                    }
-                                }
-                                return list;
-                            })
-                        }
-                    }
-                    return board;
-                })
-            }
+    builder.addCase(ADD_CARD, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists[action.payload.listId].cards.push(
+                {
+                    title: action.payload.text,
+                    description: ''
+                }
+            )
+    })
 
-        case DELETE_CARD:
-            return {
-                boards: state.boards.map((board, boardId) => {
-                    if (boardId === action.payload.boardId) {
-                        return {
-                            name: board.name,
-                            lists: board.lists.map((list, listId) => {
-                                if (listId === action.payload.listId) {
-                                    return {
-                                        cards: list.cards.filter((_, cardId) => cardId !== action.payload.cardId)
-                                    }
-                                }
-                                return list;
-                            })
-                        }
-                    }
-                    return board;
-                })
-            }
-        default:
-            return state;
-    }
-}
+    builder.addCase(EDIT_CARD_TITLE, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists[action.payload.listId].
+            cards[action.payload.cardId].title = action.payload.newText;
+    })
+
+    builder.addCase(EDIT_CARD_DESCRIPTION, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists[action.payload.listId].
+            cards[action.payload.cardId].description = action.payload.newDescription;
+    })
+
+    builder.addCase(DELETE_CARD, (state, action) => {
+        state.boards[action.payload.boardId].
+            lists[action.payload.listId].
+            cards.splice(action.payload.cardId, 1)
+    })
+})
+
 
 export const store = createStore(boardReducer, applyMiddleware(logging));
 
@@ -197,8 +87,11 @@ export const doDeleteList = payload => {
 export const doAddCard = payload => {
     return { type: ADD_CARD, payload }
 }
-export const doEditCard = payload => {
-    return { type: EDIT_CARD, payload }
+export const doEditCardTitle = payload => {
+    return { type: EDIT_CARD_TITLE, payload }
+}
+export const doEditCardDescription = payload => {
+    return { type: EDIT_CARD_DESCRIPTION, payload }
 }
 export const doDeleteCard = payload => {
     return { type: DELETE_CARD, payload }

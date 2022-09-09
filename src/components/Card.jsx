@@ -1,36 +1,15 @@
-import React, { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
-import { doEditCard } from '../store';
-import CardModal from './CardModal'
+import React from 'react'
+import { Link } from 'react-router-dom';
 
-const Card = ({ boardId, listId, cardId, card }) => {
-    const dispatch = useDispatch();
-    const [isOpen, setIsOpen] = useState(false);
-    const modalRef = useRef();
-
-    useOutsideCallback(() => setIsOpen(false), modalRef);
-    useEscapeCallback(() => setIsOpen(false));
-
-    const editTitle = newText => {
-        dispatch(doEditCard({ boardId, listId, cardId: cardId, newText }))
-    }
+const Card = ({ listId, cardId, card }) => {
 
     return (
         <div>
-            <div className='Card' onClick={() => setIsOpen(true)}>{card.title}</div>
-            {isOpen
-                ? <CardModal
-                    card={card}
-                    editTitleCallback={editTitle}
-                    closeRef={modalRef}
-                    closeCallback={() => setIsOpen(false)}
-                    title='Card 1'
-                    text='Lorem ipsum dolor sit amet, 
-            consectetur adipisicing elit. Voluptates, nesciunt!'/>
-                : null}
+            <Link class={'Link-normalize'} to={`${listId}/${cardId}`}>
+                <div className='Card'>{card.title}</div>
+            </Link>
 
-        </div>
+        </div >
     )
 }
 

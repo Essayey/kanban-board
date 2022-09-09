@@ -1,19 +1,23 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { Outlet, useParams } from 'react-router-dom'
 import { doAddList } from '../store'
 import AddForm from './AddForm'
-import CardModal from './CardModal'
 import List from './List'
-import Modal from './UI/Modal window/Modal'
 
-const Board = ({ board }) => {
+const Board = () => {
     const [isListAdding, setIsListAdding] = useState(false);
+
+    let { boardId } = useParams();
+    boardId = Number(boardId);
+
+    const board = useSelector(state => state.boards[boardId]);
     const dispatch = useDispatch();
 
+
     const addList = listName => {
-        dispatch(doAddList({ boardId: 0, listName }));
+        dispatch(doAddList({ boardId, listName }));
     }
-    console.log(isListAdding)
 
     return (
         <div className='Board'>
@@ -34,12 +38,12 @@ const Board = ({ board }) => {
                             callback={addList}
                         />
                     </div>
-
-                    : <h3 className='AddList AddListHeader' onClick={() => setIsListAdding(true)}>Add list</h3>
+                    : <h3 className='AddList AddListHeader' onClick={() => setIsListAdding(true)}>
+                        Add list
+                    </h3>
                 }
-
             </div>
-
+            <Outlet />
         </div>
     )
 }

@@ -1,25 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { doAddCard, doDeleteCard, doDeleteList, doEditCard, doRenameList } from '../store';
+import { doAddCard, doDeleteList, doRenameList } from '../store';
 import { useDispatch } from 'react-redux';
 import Card from './Card';
 import AddForm from './AddForm';
 import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
+import { useParams } from 'react-router-dom';
 
 const List = ({ cards, listName, listId }) => {
     const dispatch = useDispatch();
+
+    let { boardId } = useParams();
+    boardId = Number(boardId);
+
     const [isCardAdding, setIsCardAdding] = useState(false);
     const [listNameState, setListNameState] = useState(listName);
     const [isListRenaming, setIsListRenaming] = useState(false);
-    const listScrollRef = useRef();
 
+    const listScrollRef = useRef();
     const renameFormRef = useRef();
+
     useOutsideCallback(() => { setIsListRenaming(false) }, renameFormRef);
 
     useEscapeCallback(() => { setIsListRenaming(false) });
 
     const onSubmit = e => {
         e.preventDefault();
-        dispatch(doRenameList({ newName: listNameState, boardId: 0, listId }));
+        dispatch(doRenameList({ newName: listNameState, boardId: boardId, listId }));
     }
 
 
@@ -27,15 +33,13 @@ const List = ({ cards, listName, listId }) => {
         if (isCardAdding) listScrollRef.current.scrollTop = listScrollRef.current.scrollHeight;
     }, [isCardAdding, cards.length])
 
-    const onAddCard = () => {
-        setIsCardAdding(true);
-    }
     const deleteList = () => {
-        dispatch(doDeleteList({ boardId: 0, listId }))
+        dispatch(doDeleteList({ boardId: boardId, listId }))
     }
 
     const addCard = text => {
-        dispatch(doAddCard({ boardId: 0, listId, text }));
+        console.log(boardId)
+        dispatch(doAddCard({ boardId: boardId, listId, text }));
     }
 
     return (
@@ -58,7 +62,7 @@ const List = ({ cards, listName, listId }) => {
                 {cards.map((card, index) => <Card
                     card={card}
                     cardId={index}
-                    boardId={0}
+                    boardId={boardId}
                     listId={listId}
                     key={card.title + index}
                     title={card.title} />)}
@@ -74,10 +78,11 @@ const List = ({ cards, listName, listId }) => {
                     : null
                 }
             </div>
-            {
-                isCardAdding
-                    ? null
-                    : <div onClick={onAddCard} className='CardAdd'>+ Add card</div>
+            {isCardAdding
+                ? null
+                : <div onClick={() => setIsCardAdding(true)} className='CardAdd'>
+                    ➕ Add card
+                </div>
             }
         </div>
     )

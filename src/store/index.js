@@ -25,18 +25,18 @@ const boardReducer = createReducer(initialState, builder => {
     })
 
     builder.addCase(RENAME_LIST, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists[action.payload.listId].listName = action.payload.newName;
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId].listName = action.payload.newName;
     })
 
     builder.addCase(DELETE_LIST, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists.splice(action.payload.listId, 1);
+        state.boards[action.payload.boardId]
+            .lists.splice(action.payload.listId, 1);
     })
 
     builder.addCase(ADD_CARD, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists[action.payload.listId].cards.push(
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId].cards.push(
                 {
                     title: action.payload.text,
                     description: ''
@@ -45,21 +45,21 @@ const boardReducer = createReducer(initialState, builder => {
     })
 
     builder.addCase(EDIT_CARD_TITLE, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists[action.payload.listId].
-            cards[action.payload.cardId].title = action.payload.newText;
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId]
+            .cards[action.payload.cardId].title = action.payload.newText;
     })
 
     builder.addCase(EDIT_CARD_DESCRIPTION, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists[action.payload.listId].
-            cards[action.payload.cardId].description = action.payload.newDescription;
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId]
+            .cards[action.payload.cardId].description = action.payload.newDescription;
     })
 
     builder.addCase(DELETE_CARD, (state, action) => {
-        state.boards[action.payload.boardId].
-            lists[action.payload.listId].
-            cards.splice(action.payload.cardId, 1)
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId]
+            .cards.splice(action.payload.cardId, 1)
     })
 })
 

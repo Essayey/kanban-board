@@ -2,8 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useOutsideCallback } from '../hooks/useOutsideCallback';
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { resizeTextArea, submitOnEnter } from '../utils';
+import Button from './UI/Button';
 
 const TextareaForm = ({
+    closeNotSubmitting,
     hasCloseBtn,
     closeAfterSubmit,
     buttonText,
@@ -28,11 +30,10 @@ const TextareaForm = ({
 
     const onCloseForm = () => {
         closeFormCallback();
-        setValue('');
     }
 
-    useOutsideCallback(onCloseForm, formRef);
-    useEscapeCallback(onCloseForm);
+    useOutsideCallback(closeNotSubmitting ? () => { } : onCloseForm, formRef);
+    useEscapeCallback(closeNotSubmitting ? () => { } : onCloseForm);
 
     const submit = e => {
         e.preventDefault();
@@ -62,7 +63,7 @@ const TextareaForm = ({
                 type="text"
                 className='input' />
             <div className='Card__buttons'>
-                <button type='submit' className='btn'>{buttonText}</button>
+                <Button type='submit' variant='primary'>{buttonText}</Button>
                 {hasCloseBtn
                     ? <div onClick={onCloseForm} className='closeIcon'></div>
                     : null

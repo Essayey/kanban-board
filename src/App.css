@@ -10,18 +10,56 @@ body {
   background-color: #3c982f;
 }
 
+select {
+  padding: 5px;
+  font-size: 14px;
+  outline: none;
+  background-color: #ddd;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+select:hover {
+  background: #c7c7c7;
+}
+
+option {
+  margin: 5px;
+  border: none;
+}
+
+select:active {
+  background-color: #f2f8f4;
+}
+
+
 .App {
   display: flex;
 }
 
 .btn {
+  cursor: pointer;
   padding: 5px 10px;
   border: none;
-  background: #5757ff;
+  background: #bebee03a;
   border-radius: 5px;
   color: #eee;
   font-size: 18px;
-  font-weight: 700;
+  width: fit-content;
+}
+
+.btn+.btn {
+  margin-top: 10px;
+}
+
+.ContextMenu-btn {
+  margin-left: 10px;
+  transition: 0.1s;
+}
+
+.ContextMenu-btn:hover {
+  margin-left: 20px;
+
 }
 
 .input {
@@ -167,6 +205,8 @@ body {
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   word-break: break-word;
+
+  position: relative;
 }
 
 .Card:hover {
@@ -189,6 +229,50 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+.CardContextMenu-form {
+  cursor: default;
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.CardContextMenu-form__inner {
+  position: fixed;
+  width: 260px;
+}
+
+.ContextMenu {
+  cursor: default;
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+}
+
+.ContextMenu__inner {
+  background: #00012010;
+  width: 300px;
+  min-height: 100px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+.CardContextMenu__background {
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 
 .closeIcon {
   width: 24px;
@@ -221,4 +305,34 @@ body {
 
 .CardModal__description span {
   padding: 10px;
+}
+
+.CardMoving {
+  width: 200px;
+  height: 180px;
+  background: #ece9e9;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.CardMoving__title {
+  padding: 5px;
+  text-align: center;
+  border-bottom: 1px solid #00000022;
+  margin-bottom: 5px;
+}
+
+.CardMoving__text {
+  font-size: 14px;
+}
+
+.CardMoving__flex {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CardMoving__btn {
+  text-align: center;
 }

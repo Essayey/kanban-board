@@ -3,7 +3,8 @@ import { doAddCard, doDeleteList, doRenameList } from '../store';
 import { useDispatch } from 'react-redux';
 import Card from './Card';
 import AddForm from './AddForm';
-import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
+import { useOutsideCallback } from '../hooks/useOutsideCallback';
+import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { useParams } from 'react-router-dom';
 
 const List = ({ cards, listName, listId }) => {

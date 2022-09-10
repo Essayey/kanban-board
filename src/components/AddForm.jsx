@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { useEscapeCallback, useOutsideCallback } from '../hooks/useOutsideCallback';
-import { doAddCard } from '../store';
+import { useOutsideCallback } from '../hooks/useOutsideCallback';
+import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { resizeTextArea, submitOnEnter } from '../utils';
 
 const AddForm = ({
@@ -26,7 +25,6 @@ const AddForm = ({
     }, [])
 
     const onCloseForm = () => {
-        console.log('test')
         closeFormCallback();
         setValue('');
     }
@@ -68,5 +66,7 @@ const AddForm = ({
         </form>
     )
 }
+
+
 
 export default AddForm

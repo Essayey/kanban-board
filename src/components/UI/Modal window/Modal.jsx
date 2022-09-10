@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
-import { useEscapeCallback, useOutsideCallback } from '../../../hooks/useOutsideCallback';
+import { useOutsideCallback } from '../../../hooks/useOutsideCallback';
+import { useEscapeCallback } from '../../../hooks/useEscapeCallback';
 import styles from './Modal.module.css';
 
 const Modal = ({ children, closeCallback }) => {

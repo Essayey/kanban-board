@@ -18,11 +18,12 @@ const TextareaForm = ({
     const textAreaRef = useRef();
     const formRef = useRef();
 
-    // Set cursor at the end of the text
+    // Set cursor at the end of the text and resize 
     useEffect(() => {
         textAreaRef.current.setSelectionRange(
             textAreaRef.current.value.length, textAreaRef.current.value.length
         );
+        resizeTextArea(textAreaRef);
     }, [])
 
     const onCloseForm = () => {

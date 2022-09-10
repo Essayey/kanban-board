@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Outlet, useNavigate, useParams } from 'react-router-dom';
-import { doEditCard, doEditCardDescription, doEditCardTitle } from '../store';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { doEditCardDescription, doEditCardTitle } from '../store';
 import AddForm from './AddForm';
 import Modal from './UI/Modal window/Modal'
 

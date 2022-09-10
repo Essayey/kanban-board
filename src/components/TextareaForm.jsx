@@ -3,7 +3,8 @@ import { useOutsideCallback } from '../hooks/useOutsideCallback';
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { resizeTextArea, submitOnEnter } from '../utils';
 
-const AddForm = ({
+const TextareaForm = ({
+    hasCloseBtn,
     closeAfterSubmit,
     buttonText,
     placeholder,
@@ -61,12 +62,14 @@ const AddForm = ({
                 className='input' />
             <div className='Card__buttons'>
                 <button type='submit' className='btn'>{buttonText}</button>
-                <div onClick={onCloseForm} className='closeIcon'></div>
+                {hasCloseBtn
+                    ? <div onClick={onCloseForm} className='closeIcon'></div>
+                    : null
+                }
+
             </div>
         </form>
     )
 }
 
-
-
-export default AddForm
+export default TextareaForm

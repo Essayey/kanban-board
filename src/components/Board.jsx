@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useParams } from 'react-router-dom'
 import { doAddList } from '../store'
-import AddForm from './AddForm'
+import TextareaForm from './TextareaForm'
 import List from './List'
 
 const Board = () => {
@@ -30,12 +30,13 @@ const Board = () => {
 
                 {isListAdding
                     ? <div className='AddList'>
-                        <AddForm
+                        <TextareaForm
                             closeAfterSubmit={true}
                             buttonText='Add list'
                             placeholder='Type the title of the list'
                             closeFormCallback={() => setIsListAdding(false)}
                             callback={addList}
+                            hasCloseBtn={true}
                         />
                     </div>
                     : <h3 className='AddList AddListHeader' onClick={() => setIsListAdding(true)}>

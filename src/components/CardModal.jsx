@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { doEditCardDescription, doEditCardTitle } from '../store';
-import AddForm from './AddForm';
+import TextareaForm from './TextareaForm';
 import Modal from './UI/Modal window/Modal'
 
 const CardModal = () => {
@@ -40,13 +40,14 @@ const CardModal = () => {
             <Link className='closeIcon CloseIcon-abs' to={'../'} />
             {isTitleEditing
                 ? <div className='CardModal__title'>
-                    <AddForm
+                    <TextareaForm
                         closeAfterSubmit={true}
                         buttonText={'Edit title'}
                         initialValue={card.title}
                         placeholder={''}
                         closeFormCallback={() => setIsTitleEditing(false)}
-                        callback={editTitle} />
+                        callback={editTitle}
+                        hasCloseBtn={true} />
                 </div>
 
                 : <div onClick={() => setIsTitleEditing(true)} className='CardModal__title'>
@@ -58,13 +59,14 @@ const CardModal = () => {
                 <h3>Description</h3>
                 {isDescriptionEditing
                     ? <div>
-                        <AddForm
+                        <TextareaForm
                             closeAfterSubmit={true}
                             buttonText={'Edit description'}
                             initialValue={card.description}
                             placeholder={''}
                             closeFormCallback={() => setIsDescriptionEditing(false)}
-                            callback={editDescription} />
+                            callback={editDescription}
+                            hasCloseBtn={true} />
                     </div>
 
                     : <div onClick={() => setIsDescriptionEditing(true)}>

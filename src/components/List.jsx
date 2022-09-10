@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { doAddCard, doDeleteList, doRenameList } from '../store';
 import { useDispatch } from 'react-redux';
 import Card from './Card';
-import AddForm from './AddForm';
+import TextareaForm from './TextareaForm';
 import { useOutsideCallback } from '../hooks/useOutsideCallback';
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { useParams } from 'react-router-dom';
+import CardContextMenu from './CardContextMenu';
 
 const List = ({ cards, listName, listId }) => {
     const dispatch = useDispatch();
@@ -68,13 +69,14 @@ const List = ({ cards, listName, listId }) => {
                     key={card.title + index}
                     title={card.title} />)}
                 {isCardAdding
-                    ? <AddForm
+                    ? <TextareaForm
                         closeAfterSubmit={false}
                         buttonText='Add card'
                         placeholder='Type the title of the card'
                         callback={addCard}
                         closeFormCallback={() => setIsCardAdding(false)}
                         listScrollRef={listScrollRef}
+                        hasCloseBtn={true}
                     />
                     : null
                 }

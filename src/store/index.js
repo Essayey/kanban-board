@@ -13,6 +13,7 @@ const ADD_CARD = 'ADD_CARD';
 const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE';
 const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION';
 const DELETE_CARD = 'DELETE_CARD';
+const MOVE_CARD = 'MOVE_CARD';
 
 const boardReducer = createReducer(initialState, builder => {
     builder.addCase(ADD_LIST, (state, action) => {
@@ -61,6 +62,19 @@ const boardReducer = createReducer(initialState, builder => {
             .lists[action.payload.listId]
             .cards.splice(action.payload.cardId, 1)
     })
+
+    builder.addCase(MOVE_CARD, (state, action) => {
+        state.boards[action.payload.destBoardId]
+            .lists[action.payload.destListId]
+            .cards.splice(action.payload.destCardId, 0,
+                state.boards[action.payload.srcBoardId]
+                    .lists[action.payload.srcListId]
+                    .cards[action.payload.srcCardId]);
+        state.boards[action.payload.srcBoardId]
+            .lists[action.payload.srcListId]
+            .cards.splice(action.payload.srcCardId, 1);
+
+    })
 })
 
 
@@ -95,4 +109,7 @@ export const doEditCardDescription = payload => {
 }
 export const doDeleteCard = payload => {
     return { type: DELETE_CARD, payload }
+}
+export const doMoveCard = payload => {
+    return { type: MOVE_CARD, payload }
 }

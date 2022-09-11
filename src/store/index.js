@@ -77,7 +77,6 @@ const boardReducer = createReducer(initialState, builder => {
             const card = srcCards[action.payload.srcCardId];
 
             srcCards.splice(action.payload.srcCardId, 1);
-            console.log('deleting ', card.title);
 
             if (action.payload.destCardId !== destCards.length) {
                 destCards.splice(action.payload.destCardId, 0, card)

@@ -36,7 +36,7 @@ export const initialState = {
                 title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },],
-            listName: "List 1"
+            listName: "List 2"
         }]
     },
     {

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { doEditCardTitle } from '../store';
@@ -9,6 +9,9 @@ const Card = ({ listId, cardId, card }) => {
     const dispatch = useDispatch();
     const { boardId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
+    const [cardRect, setCardRect] = useState();
+    const cardRef = useRef();
+
 
     const editTitle = newText => {
         dispatch(doEditCardTitle({
@@ -23,9 +26,14 @@ const Card = ({ listId, cardId, card }) => {
         e.preventDefault()
         setIsEditing(true);
     }
+
+    const calculatePosition = () => {
+        setCardRect(cardRef.current.getBoundingClientRect());
+    }
+
     return (
-        <div className='Card'>
-            <Link onContextMenu={onContextMenu} class={'Link-normalize'} to={`${listId}/${cardId}`}>
+        <div onContextMenu={calculatePosition} ref={cardRef} className='Card'>
+            <Link onContextMenu={onContextMenu} className={'Link-normalize'} to={`${listId}/${cardId}`}>
                 <div>
                     {card.title}
                 </div>
@@ -33,6 +41,8 @@ const Card = ({ listId, cardId, card }) => {
             {
                 isEditing
                     ? <CardContextMenu
+                        top={cardRect.top}
+                        left={cardRect.left}
                         boardId={boardId}
                         listId={listId}
                         cardId={cardId}

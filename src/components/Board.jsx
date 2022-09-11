@@ -12,6 +12,7 @@ const Board = () => {
     boardId = Number(boardId);
 
     const board = useSelector(state => state.boards[boardId]);
+
     const dispatch = useDispatch();
 
 

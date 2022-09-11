@@ -13,7 +13,6 @@ const CardModal = () => {
     const dispatch = useDispatch();
 
     const [isTitleEditing, setIsTitleEditing] = useState(false);
-    // TODO: add description edit
     const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
 
 

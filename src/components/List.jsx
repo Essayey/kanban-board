@@ -6,7 +6,6 @@ import TextareaForm from './TextareaForm';
 import { useOutsideCallback } from '../hooks/useOutsideCallback';
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { useParams } from 'react-router-dom';
-import CardContextMenu from './CardContextMenu';
 
 const List = ({ cards, listName, listId }) => {
     const dispatch = useDispatch();

@@ -20,6 +20,7 @@ const List = ({ cards, listName, listId }) => {
     const listScrollRef = useRef();
     const renameFormRef = useRef();
 
+
     useOutsideCallback(() => { setIsListRenaming(false) }, renameFormRef);
 
     useEscapeCallback(() => { setIsListRenaming(false) });
@@ -61,6 +62,7 @@ const List = ({ cards, listName, listId }) => {
 
             <div ref={listScrollRef} className='List__inner'>
                 {cards.map((card, index) => <Card
+
                     card={card}
                     cardId={index}
                     boardId={boardId}

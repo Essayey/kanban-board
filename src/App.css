@@ -302,6 +302,26 @@ select:active {
   padding: 10px;
 }
 
+.CardSkeleton {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: #00000046;
+  border-radius: 5px;
+  position: relative;
+}
+
+.CardSkeleton::before {
+  content: "";
+  top: -40px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+}
+
 .CardMoving {
   width: 235px;
   height: 235px;

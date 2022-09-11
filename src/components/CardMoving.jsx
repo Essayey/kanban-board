@@ -35,6 +35,11 @@ const CardMoving = ({
         closeFormCallback();
     }
 
+    const isTheSameList = (listId, listNumber, boardId, boardNumber) => {
+        if (listId == listNumber && boardId == boardNumber) return true;
+        return false;
+    }
+
     return (
         <div className='CardMoving'>
             <div className='CardMoving__title'>
@@ -62,12 +67,21 @@ const CardMoving = ({
                     <div className='CardMoving__text'>
                         Select position
                     </div>
+
                     <select value={position} onChange={e => setPosition(e.target.value)}>
-                        {boards[boardNumber].lists[listNumber].cards.map((_, index) => <option key={index} value={index}>{index + 1}</option>)}
-                        <option value={boards[boardNumber].lists[listNumber].cards.length}>
-                            {boards[boardNumber].lists[listNumber].cards.length + 1}
-                        </option>
+                        {boards[boardNumber].lists[listNumber].cards.map((_, index) => {
+                            if (!isTheSameList(listId, listNumber, boardId, boardNumber) || cardId !== index)
+                                return <option key={index} value={index}>{index + 1}</option>
+                        })}
+                        {isTheSameList(listId, listNumber, boardId, boardNumber)
+                            ? null
+                            : <option value={boards[boardNumber].lists[listNumber].cards.length}>
+                                {boards[boardNumber].lists[listNumber].cards.length + 1}
+                            </option>
+                        }
+
                     </select>
+
                 </div>
                 <div className={'CardMoving__btn'}>
                     <Button onClick={moveCard} variant='primary'>Move card</Button>

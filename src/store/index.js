@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import { logging } from './middleware';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { initialState } from './initialState';
 import { createReducer } from '@reduxjs/toolkit';
 
@@ -64,21 +64,48 @@ const boardReducer = createReducer(initialState, builder => {
     })
 
     builder.addCase(MOVE_CARD, (state, action) => {
-        state.boards[action.payload.destBoardId]
+        const destCards = state.boards[action.payload.destBoardId]
             .lists[action.payload.destListId]
-            .cards.splice(action.payload.destCardId, 0,
-                state.boards[action.payload.srcBoardId]
-                    .lists[action.payload.srcListId]
-                    .cards[action.payload.srcCardId]);
-        state.boards[action.payload.srcBoardId]
+            .cards;
+        const srcCards = state.boards[action.payload.srcBoardId]
             .lists[action.payload.srcListId]
-            .cards.splice(action.payload.srcCardId, 1);
+            .cards;
 
+
+        if (action.payload.srcListId == action.payload.destListId
+            && action.payload.srcBoardId == action.payload.destBoardId) {
+            const card = srcCards[action.payload.srcCardId];
+
+            srcCards.splice(action.payload.srcCardId, 1);
+            console.log('deleting ', card.title);
+
+            if (action.payload.destCardId !== destCards.length) {
+                destCards.splice(action.payload.destCardId, 0, card)
+                console.log('splice')
+            }
+            else {
+                destCards.push(card);
+                console.log('push')
+            }
+
+            return;
+        }
+
+        if (action.payload.destCardId - 1 !== destCards.length) {
+            destCards.splice(action.payload.destCardId, 0,
+                srcCards[action.payload.srcCardId]);
+        }
+
+        else {
+            destCards.push(srcCards[action.payload.srcCardId])
+        }
+
+        srcCards.splice(action.payload.srcCardId, 1);
     })
 })
 
 
-export const store = createStore(boardReducer, applyMiddleware(logging));
+export const store = createStore(boardReducer, composeWithDevTools());
 
 export const doCreateBoard = payload => {
     return { type: CREATE_BOARD, payload }

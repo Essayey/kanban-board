@@ -54,13 +54,12 @@ const Card = ({ listId, cardId, card }) => {
     const dragOverHandler = e => {
         if (!isDragging) {
             e.preventDefault();
-            setIsDragOver(true);
+            if (!isDragOver) setIsDragOver(true);
             const rect = dropRef.current.getBoundingClientRect();
             const y = e.clientY - rect.top;
             setDropPosition(y > rect.height / 2 ? true : false);
         }
     }
-
     const dropHandler = (e) => {
         e.preventDefault();
         setIsDragOver(false);

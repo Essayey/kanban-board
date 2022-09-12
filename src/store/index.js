@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { initialState } from './initialState';
 import { createReducer } from '@reduxjs/toolkit';
+import ContextMenu from '../components/ContextMenu';
 
 const CREATE_BOARD = 'CREATE_BOARD';
 const RENAME_BOARD = 'RENAME_BOARD';
@@ -84,15 +85,23 @@ const boardReducer = createReducer(initialState, builder => {
             && action.payload.srcBoardId == action.payload.destBoardId) {
             const card = srcCards[action.payload.srcCardId];
 
-            srcCards.splice(action.payload.srcCardId, 1);
-
             if (action.payload.destCardId !== destCards.length) {
                 destCards.splice(action.payload.destCardId, 0, card)
-                console.log('splice')
+                console.log('insert at ' + action.payload.destCardId)
+                console.log(action.payload.srcCardId, ' to ', action.payload.destCardId)
             }
             else {
                 destCards.push(card);
                 console.log('push')
+            }
+
+            if (action.payload.destCardId > action.payload.srcCardId) {
+                srcCards.splice(action.payload.srcCardId, 1);
+                console.log('delete at' + (action.payload.srcCardId))
+            }
+            else {
+                srcCards.splice(action.payload.srcCardId + 1, 1);
+                console.log('delete at' + (action.payload.srcCardId + 1))
             }
 
             return;

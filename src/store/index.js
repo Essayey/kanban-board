@@ -87,21 +87,16 @@ const boardReducer = createReducer(initialState, builder => {
 
             if (action.payload.destCardId !== destCards.length) {
                 destCards.splice(action.payload.destCardId, 0, card)
-                console.log('insert at ' + action.payload.destCardId)
-                console.log(action.payload.srcCardId, ' to ', action.payload.destCardId)
             }
             else {
                 destCards.push(card);
-                console.log('push')
             }
 
             if (action.payload.destCardId > action.payload.srcCardId) {
                 srcCards.splice(action.payload.srcCardId, 1);
-                console.log('delete at' + (action.payload.srcCardId))
             }
             else {
                 srcCards.splice(action.payload.srcCardId + 1, 1);
-                console.log('delete at' + (action.payload.srcCardId + 1))
             }
 
             return;

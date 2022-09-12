@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { useOutsideCallback } from '../hooks/useOutsideCallback'
 import ContextMenu from './ContextMenu';
@@ -17,6 +17,9 @@ const CardContextMenu = ({
     left
 }) => {
     const [isMoving, setIsMoving] = useState(false);
+    const [calculatedTop, setCalculatedTop] = useState(top);
+    const [calculatedLeft, setCalculatedLeft] = useState(left);
+    const [contextMenuPosition, setContextMenuPosition] = useState(1);
     const dispatch = useDispatch();
 
     const onDeleteCard = () => {
@@ -27,6 +30,13 @@ const CardContextMenu = ({
     const onOpenMoveContextMenu = () => {
         setIsMoving(true);
     }
+
+    useEffect(() => {
+        setCalculatedTop(calculatedTop < window.innerHeight - 300 ? calculatedTop : window.innerHeight - 300)
+        setCalculatedLeft(calculatedLeft < window.innerWidth - 300 ? calculatedLeft : window.innerWidth - 300)
+        setContextMenuPosition(calculatedLeft < window.innerWidth - 350 ? 1 : -1);
+    }, [window.innerHeight, window.innerWidth])
+
 
 
     const menuRef = useRef();
@@ -41,7 +51,7 @@ const CardContextMenu = ({
             <div className='CardContextMenu__background'></div>
             <div ref={menuRef}>
                 <div
-                    style={{ top: top, left: left }}
+                    style={{ top: calculatedTop, left: calculatedLeft }}
                     className='CardContextMenu-form'>
                     <TextareaForm
                         closeNotSubmitting={true}
@@ -53,11 +63,11 @@ const CardContextMenu = ({
                     />
                 </div >
 
-                <ContextMenu top={top} left={left + 260}>
+                <ContextMenu top={calculatedTop} left={calculatedLeft + 260 * contextMenuPosition}>
                     <Button className='ContextMenu-btn' onClick={onDeleteCard}>Delete card</Button>
                     <Button className='ContextMenu-btn' onClick={onOpenMoveContextMenu}>Move card</Button>
                     {isMoving
-                        ? <ContextMenu ref={movingFormRef} top={80} left={10}>
+                        ? <ContextMenu ref={movingFormRef} top={100} left={-50}>
                             <CardMoving
                                 boardId={boardId}
                                 listId={listId}

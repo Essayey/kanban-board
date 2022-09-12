@@ -9,6 +9,8 @@ const Card = ({ listId, cardId, card }) => {
     const { boardId } = useParams();
     const [isEditing, setIsEditing] = useState(false);
     const [cardRect, setCardRect] = useState();
+    const [contextMenuTop, setContextMenuTop] = useState();
+    const [contextMenuLeft, setContextMenuLeft] = useState();
     const [isDragOver, setIsDragOver] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [dropPosition, setDropPosition] = useState(true);

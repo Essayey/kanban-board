@@ -3,37 +3,37 @@ export const initialState = {
         name: 'Board #1',
         lists: [{
             cards: [{
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '1',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '2',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '3',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },],
             listName: "List 1"
         }, {
             cards: [{
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '4',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '5',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '6',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '7',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },
             {
-                title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, quisquam.',
+                title: '8',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             },],
             listName: "List 1"
@@ -53,5 +53,12 @@ export const initialState = {
             listName: "List 1"
         }]
     }
-    ]
+    ],
+    dropCardState: {
+        boardId: 0,
+        srcCardId: 0,
+        srcListId: 0,
+        destCardId: 0,
+        destListId: 0
+    }
 }

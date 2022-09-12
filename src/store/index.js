@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { initialState } from './initialState';
 import { createReducer } from '@reduxjs/toolkit';
@@ -13,7 +13,11 @@ const ADD_CARD = 'ADD_CARD';
 const EDIT_CARD_TITLE = 'EDIT_CARD_TITLE';
 const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION';
 const DELETE_CARD = 'DELETE_CARD';
+const INSERT_CARD = 'INSERT_CARD';
 const MOVE_CARD = 'MOVE_CARD';
+
+const WRITE_DROP_SRC = 'WRITE_DROP_SRC';
+const WRITE_DROP_DEST = 'WRITE_DROP_DEST';
 
 const boardReducer = createReducer(initialState, builder => {
     builder.addCase(ADD_LIST, (state, action) => {
@@ -24,7 +28,6 @@ const boardReducer = createReducer(initialState, builder => {
             }
         )
     })
-
     builder.addCase(RENAME_LIST, (state, action) => {
         state.boards[action.payload.boardId]
             .lists[action.payload.listId].listName = action.payload.newName;
@@ -62,6 +65,11 @@ const boardReducer = createReducer(initialState, builder => {
             .lists[action.payload.listId]
             .cards.splice(action.payload.cardId, 1)
     })
+    builder.addCase(INSERT_CARD, (state, action) => {
+        state.boards[action.payload.boardId]
+            .lists[action.payload.listId]
+            .cards.splice(action.payload.cardId, 0, action.payload.card);
+    })
 
     builder.addCase(MOVE_CARD, (state, action) => {
         const destCards = state.boards[action.payload.destBoardId]
@@ -94,12 +102,21 @@ const boardReducer = createReducer(initialState, builder => {
             destCards.splice(action.payload.destCardId, 0,
                 srcCards[action.payload.srcCardId]);
         }
-
         else {
             destCards.push(srcCards[action.payload.srcCardId])
         }
-
         srcCards.splice(action.payload.srcCardId, 1);
+    })
+
+
+    builder.addCase(WRITE_DROP_DEST, (state, action) => {
+        state.dropCardState.destCardId = action.payload.cardId;
+        state.dropCardState.destListId = action.payload.listId;
+    })
+    builder.addCase(WRITE_DROP_SRC, (state, action) => {
+        state.dropCardState.boardId = action.payload.boardId;
+        state.dropCardState.srcCardId = action.payload.cardId;
+        state.dropCardState.srcListId = action.payload.listId;
     })
 })
 
@@ -136,6 +153,17 @@ export const doEditCardDescription = payload => {
 export const doDeleteCard = payload => {
     return { type: DELETE_CARD, payload }
 }
+export const doInsertCard = payload => {
+    return { type: INSERT_CARD, payload }
+}
 export const doMoveCard = payload => {
     return { type: MOVE_CARD, payload }
+}
+
+export const doWriteDropSrc = payload => {
+    return { type: WRITE_DROP_SRC, payload }
+}
+
+export const doWriteDropDest = payload => {
+    return { type: WRITE_DROP_DEST, payload }
 }

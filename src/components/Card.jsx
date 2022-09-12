@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { doEditCardTitle, doInsertCard, doMoveCard, doWriteDropDest, doWriteDropSrc } from '../store';
+import { doEditCardTitle, doMoveCard, doWriteDropSrc } from '../store';
 import CardContextMenu from './CardContextMenu';
-
 
 const Card = ({ listId, cardId, card }) => {
     const dispatch = useDispatch();
@@ -13,16 +12,10 @@ const Card = ({ listId, cardId, card }) => {
     const [isDragOver, setIsDragOver] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [dropPosition, setDropPosition] = useState(true);
-    const [isDragOverFired, setIsDragOverFired] = useState(false);
     const cardRef = useRef();
     const dropRef = useRef();
     const dropCardState = useSelector(state => state.dropCardState);
 
-    useEffect(() => {
-        if (!isDragOver) {
-            setIsDragOverFired(false);
-        }
-    }, [isDragOver])
 
     const editTitle = newText => {
         dispatch(doEditCardTitle({
@@ -42,10 +35,9 @@ const Card = ({ listId, cardId, card }) => {
         setCardRect(cardRef.current.getBoundingClientRect());
     }
 
-    const dragStartHandler = (e, card) => {
+    const dragStartHandler = () => {
         setIsDragging(true);
         dispatch(doWriteDropSrc({ cardId, listId, boardId }));
-        console.log('card ' + cardId, 'list ' + listId);
     }
     const dragLeaveHandler = e => {
         e.preventDefault();
@@ -64,34 +56,33 @@ const Card = ({ listId, cardId, card }) => {
             const rect = dropRef.current.getBoundingClientRect();
             const y = e.clientY - rect.top;
             setDropPosition(y > rect.height / 2 ? true : false);
-            setIsDragOverFired(true);
         }
     }
 
     const dropHandler = (e) => {
         e.preventDefault();
         setIsDragOver(false);
-        console.log('dest card ' + cardId, 'destList ' + listId)
-        const dropPos = dropPosition ? 1 : 0;
+
+        let dropPos = dropPosition ? 1 : 0;
+
         dispatch(doMoveCard({
             destBoardId: dropCardState.boardId,
             destListId: listId,
             destCardId: cardId + dropPos,
             srcBoardId: dropCardState.boardId,
             srcListId: dropCardState.srcListId,
-            srcCardId: dropCardState.srcCardId
+            srcCardId: dropCardState.srcCardId,
         }))
-        console.log(dropPos)
     }
 
     return (
         <div
             ref={dropRef}
-            onDragStart={e => dragStartHandler(e, card)}
+            onDragStart={e => dragStartHandler()}
             onDragLeave={e => dragLeaveHandler(e)}
             onDragEnd={e => dragEndHandler(e)}
             onDragOver={e => dragOverHandler(e)}
-            onDrop={e => dropHandler(e, card)}
+            onDrop={e => dropHandler(e)}
             draggable={!isEditing}>
             {isDragOver && !dropPosition
                 ? <div className={'CardSkeleton'}></div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { doAddCard, doDeleteList, doRenameList } from '../store';
-import { useDispatch } from 'react-redux';
+import { doAddCard, doDeleteList, doMoveCard, doRenameList } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
 import Card from './Card';
 import TextareaForm from './TextareaForm';
 import { useOutsideCallback } from '../hooks/useOutsideCallback';
@@ -16,10 +16,12 @@ const List = ({ cards, listName, listId }) => {
     const [isCardAdding, setIsCardAdding] = useState(false);
     const [listNameState, setListNameState] = useState(listName);
     const [isListRenaming, setIsListRenaming] = useState(false);
+    const [isDragOver, setIsDragOver] = useState(false);
 
     const listScrollRef = useRef();
     const renameFormRef = useRef();
-
+    const list = useSelector(state => state.boards[boardId].lists[listId]);
+    const dropCardState = useSelector(state => state.dropCardState);
 
     useOutsideCallback(() => { setIsListRenaming(false) }, renameFormRef);
 
@@ -40,12 +42,38 @@ const List = ({ cards, listName, listId }) => {
     }
 
     const addCard = text => {
-        console.log(boardId)
         dispatch(doAddCard({ boardId: boardId, listId, text }));
     }
 
+    const dragOverHandler = e => {
+        e.preventDefault();
+        setIsDragOver(true);
+    }
+    const dragLeaveHandler = e => {
+        if (e.currentTarget.contains(e.relatedTarget)) return;
+        setIsDragOver(false);
+    }
+    const dropHandler = e => {
+        e.preventDefault();
+
+        if (list.cards.length === 0) {
+            dispatch(doMoveCard({
+                destBoardId: dropCardState.boardId,
+                destListId: listId,
+                destCardId: 0,
+                srcBoardId: dropCardState.boardId,
+                srcListId: dropCardState.srcListId,
+                srcCardId: dropCardState.srcCardId,
+            }))
+        }
+
+    }
+
     return (
-        <div className='List'>
+        <div className='List' draggable='false '
+            onDragOver={e => dragOverHandler(e)}
+            onDrop={e => dropHandler(e)}
+            onDragLeave={e => dragLeaveHandler(e)}>
             {isListRenaming
                 ? <form ref={renameFormRef} onSubmit={onSubmit}>
                     <input
@@ -60,7 +88,13 @@ const List = ({ cards, listName, listId }) => {
                 </div>
             }
 
-            <div ref={listScrollRef} className='List__inner'>
+            <div ref={listScrollRef} className='List__inner'
+
+            >
+                {list.cards.length === 0 && isDragOver
+                    ? <div className={'CardSkeleton'}></div>
+                    : null
+                }
                 {cards.map((card, index) => <Card
 
                     card={card}

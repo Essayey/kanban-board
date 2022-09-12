@@ -7,14 +7,14 @@ export const initialState = {
                 description: 'Learn Redux thunk'
             },
             {
-                title: 'You can click this card to edit',
+                title: 'You can click on this card to edit',
                 description: 'Build server and database'
             },
             {
                 title: 'You can Drag and Drop this card.',
                 description: ''
             }, {
-                title: 'Also you can right click cards to open context menu',
+                title: 'Also you can right click on cards to open context menu',
                 description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
             }],
             listName: "Todo"

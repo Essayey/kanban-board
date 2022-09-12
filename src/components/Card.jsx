@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { doEditCardTitle } from '../store';
+import { doEditCardTitle, doInsertCard, doMoveCard, doWriteDropDest, doWriteDropSrc } from '../store';
 import CardContextMenu from './CardContextMenu';
 
 
@@ -13,8 +13,16 @@ const Card = ({ listId, cardId, card }) => {
     const [isDragOver, setIsDragOver] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [dropPosition, setDropPosition] = useState(true);
+    const [isDragOverFired, setIsDragOverFired] = useState(false);
     const cardRef = useRef();
     const dropRef = useRef();
+    const dropCardState = useSelector(state => state.dropCardState);
+
+    useEffect(() => {
+        if (!isDragOver) {
+            setIsDragOverFired(false);
+        }
+    }, [isDragOver])
 
     const editTitle = newText => {
         dispatch(doEditCardTitle({
@@ -36,15 +44,15 @@ const Card = ({ listId, cardId, card }) => {
 
     const dragStartHandler = (e, card) => {
         setIsDragging(true);
-        console.log(card);
+        dispatch(doWriteDropSrc({ cardId, listId, boardId }));
+        console.log('card ' + cardId, 'list ' + listId);
     }
     const dragLeaveHandler = e => {
         e.preventDefault();
         if (e.currentTarget.contains(e.relatedTarget)) return;
         setIsDragOver(false);
-        console.log(e.target);
-
     }
+
     const dragEndHandler = e => {
         setIsDragOver(false);
         setIsDragging(false);
@@ -56,15 +64,24 @@ const Card = ({ listId, cardId, card }) => {
             const rect = dropRef.current.getBoundingClientRect();
             const y = e.clientY - rect.top;
             setDropPosition(y > rect.height / 2 ? true : false);
-            console.log('Позиция ' + y);
-            console.log('Высота ' + rect.height);
-            console.log(dropPosition);
+            setIsDragOverFired(true);
         }
     }
 
-    const dropHandler = (e, card) => {
+    const dropHandler = (e) => {
         e.preventDefault();
-        console.log(card);
+        setIsDragOver(false);
+        console.log('dest card ' + cardId, 'destList ' + listId)
+        const dropPos = dropPosition ? 1 : 0;
+        dispatch(doMoveCard({
+            destBoardId: dropCardState.boardId,
+            destListId: listId,
+            destCardId: cardId + dropPos,
+            srcBoardId: dropCardState.boardId,
+            srcListId: dropCardState.srcListId,
+            srcCardId: dropCardState.srcCardId
+        }))
+        console.log(dropPos)
     }
 
     return (

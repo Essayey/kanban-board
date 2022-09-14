@@ -76,7 +76,7 @@ const Card = ({ listId, cardId, card }) => {
     }
 
     const getStyle = (cardId, listId) => {
-        if (cardId == srcCardId && listId == srcListId) return { color: 'transparent', background: '#898989' };
+        if (cardId == srcCardId && listId == srcListId) return { color: 'transparent', background: '#ccc' };
         return {}
     }
     return (

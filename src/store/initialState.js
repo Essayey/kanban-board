@@ -80,11 +80,10 @@ export const initialState = {
     }
     ],
     dropCardState: {
-        boardId: 0,
-        srcCardId: 0,
-        srcListId: 0,
-        destCardId: 0,
-        destListId: 0
+        srcCardId: null,
+        srcListId: null,
+        dragging: false,
+        prevEnterCardId: null,
     }
 }
 

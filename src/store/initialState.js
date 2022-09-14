@@ -83,7 +83,6 @@ export const initialState = {
         srcCardId: null,
         srcListId: null,
         dragging: false,
-        prevEnterCardId: null,
     }
 }
 

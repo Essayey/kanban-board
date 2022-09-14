@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { doEditCardTitle, doMoveCard, doSetDragging, doSetPrevEnterCard, doWriteDropSrc } from '../store';
@@ -32,7 +33,12 @@ const Card = ({ listId, cardId, card }) => {
 
     // Drag'n'drop
     const dragItemNode = useRef();
-    const { srcCardId, srcListId, dragging, prevEnterCardId } = useSelector(state => state.dropCardState);
+    const { srcCardId, srcListId, dragging } = useSelector(state => state.dropCardState);
+    const [firstRender, setFirstRender] = useState(true);
+    const preventEnterFire = useRef(false);
+    setTimeout(() => {
+        setFirstRender(false);
+    }, 10)
 
     const handleDragStart = (e, cardId, listId) => {
         dragItemNode.current = e.target;
@@ -52,12 +58,9 @@ const Card = ({ listId, cardId, card }) => {
         dragItemNode.current = null;
     }
     const handleDragEnter = (e, cardId, listId) => {
-        e.preventDefault()
-        if ((srcCardId !== cardId || srcListId !== listId)
-        ) {
-            console.log(cardId, prevEnterCardId)
-            console.log('Dragging list, card', srcListId, srcCardId)
-            console.log('Entering list, card', srcListId, srcCardId);
+        e.preventDefault();
+        if ((cardId !== srcCardId || listId !== srcListId)
+            && preventEnterFire.current) {
             dispatch(doMoveCard({
                 srcBoardId: boardId,
                 destBoardId: boardId,
@@ -67,8 +70,11 @@ const Card = ({ listId, cardId, card }) => {
                 destCardId: cardId
             }))
             dispatch(doWriteDropSrc({ cardId, listId }));
+            preventEnterFire.current = false;
         }
+        preventEnterFire.current = true;
     }
+
     const getStyle = (cardId, listId) => {
         if (cardId == srcCardId && listId == srcListId) return { color: 'transparent', background: '#898989' };
         return {}
@@ -76,7 +82,8 @@ const Card = ({ listId, cardId, card }) => {
     return (
         <div draggable={!isEditing}
             onDragStart={e => handleDragStart(e, cardId, listId)}
-            onDragEnter={e => handleDragEnter(e, cardId, listId)}>
+            onDragEnter={!firstRender && dragging ? e => handleDragEnter(e, cardId, listId) : null}
+        >
 
             <div
                 onContextMenu={calculatePosition}

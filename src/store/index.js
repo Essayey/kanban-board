@@ -20,7 +20,7 @@ const MOVE_CARD = 'MOVE_CARD';
 const WRITE_DROP_SRC = 'WRITE_DROP_SRC';
 const WRITE_DROP_DEST = 'WRITE_DROP_DEST';
 const SET_DRAGGING = 'SET_DRAGGING';
-const SET_PREV_ENTER_CARD = 'SET_PREV_ENTER_CARD'
+
 
 const boardReducer = createReducer(initialState, builder => {
     builder.addCase(ADD_LIST, (state, action) => {
@@ -86,7 +86,7 @@ const boardReducer = createReducer(initialState, builder => {
         if (action.payload.srcListId == action.payload.destListId
             && action.payload.srcBoardId == action.payload.destBoardId) {
 
-            destCards.splice(action.payload.srcCardId, 0, destCards.splice(action.payload.destCardId, 1)[0]);
+            destCards.splice(action.payload.destCardId, 0, srcCards.splice(action.payload.srcCardId, 1)[0]);
 
             return;
         }
@@ -108,9 +108,6 @@ const boardReducer = createReducer(initialState, builder => {
     builder.addCase(WRITE_DROP_SRC, (state, action) => {
         state.dropCardState.srcCardId = action.payload.cardId;
         state.dropCardState.srcListId = action.payload.listId;
-    })
-    builder.addCase(SET_PREV_ENTER_CARD, (state, action) => {
-        state.dropCardState.prevEnterCardId = action.payload;
     })
 })
 
@@ -164,7 +161,4 @@ export const doWriteDropDest = payload => {
 
 export const doSetDragging = payload => {
     return { type: SET_DRAGGING, payload }
-}
-export const doSetPrevEnterCard = payload => {
-    return { type: SET_PREV_ENTER_CARD, payload }
 }

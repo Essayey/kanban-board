@@ -15,7 +15,6 @@ const Board = () => {
 
     const dispatch = useDispatch();
 
-
     const addList = listName => {
         dispatch(doAddList({ boardId, listName }));
     }

@@ -19,6 +19,8 @@ const MOVE_CARD = 'MOVE_CARD';
 
 const WRITE_DROP_SRC = 'WRITE_DROP_SRC';
 const WRITE_DROP_DEST = 'WRITE_DROP_DEST';
+const SET_DRAGGING = 'SET_DRAGGING';
+
 
 const boardReducer = createReducer(initialState, builder => {
     builder.addCase(ADD_LIST, (state, action) => {
@@ -83,21 +85,8 @@ const boardReducer = createReducer(initialState, builder => {
 
         if (action.payload.srcListId == action.payload.destListId
             && action.payload.srcBoardId == action.payload.destBoardId) {
-            const card = srcCards[action.payload.srcCardId];
 
-            if (action.payload.destCardId !== destCards.length) {
-                destCards.splice(action.payload.destCardId, 0, card)
-            }
-            else {
-                destCards.push(card);
-            }
-
-            if (action.payload.destCardId > action.payload.srcCardId) {
-                srcCards.splice(action.payload.srcCardId, 1);
-            }
-            else {
-                srcCards.splice(action.payload.srcCardId + 1, 1);
-            }
+            destCards.splice(action.payload.destCardId, 0, srcCards.splice(action.payload.srcCardId, 1)[0]);
 
             return;
         }
@@ -113,12 +102,10 @@ const boardReducer = createReducer(initialState, builder => {
     })
 
 
-    builder.addCase(WRITE_DROP_DEST, (state, action) => {
-        state.dropCardState.destCardId = action.payload.cardId;
-        state.dropCardState.destListId = action.payload.listId;
+    builder.addCase(SET_DRAGGING, (state, action) => {
+        state.dropCardState.dragging = action.payload;
     })
     builder.addCase(WRITE_DROP_SRC, (state, action) => {
-        state.dropCardState.boardId = action.payload.boardId;
         state.dropCardState.srcCardId = action.payload.cardId;
         state.dropCardState.srcListId = action.payload.listId;
     })
@@ -170,4 +157,8 @@ export const doWriteDropSrc = payload => {
 
 export const doWriteDropDest = payload => {
     return { type: WRITE_DROP_DEST, payload }
+}
+
+export const doSetDragging = payload => {
+    return { type: SET_DRAGGING, payload }
 }

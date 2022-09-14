@@ -199,6 +199,7 @@ select:active {
 
 .Card {
   width: 100%;
+  min-height: 50px;
   padding: 5px;
   margin-bottom: 15px;
   background-color: #f2f8f4;
@@ -206,6 +207,10 @@ select:active {
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   word-break: break-word;
   overflow-x: visible;
+}
+
+.current {
+  background-color: #48544c;
 }
 
 .Card:hover {

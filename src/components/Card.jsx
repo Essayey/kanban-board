@@ -22,14 +22,16 @@ const Card = ({ listId, cardId, card }) => {
         }))
     }
 
-    const onContextMenu = e => {
-        e.preventDefault()
-        setIsEditing(true);
-    }
-
     const calculatePosition = () => {
         setCardRect(cardRef.current.getBoundingClientRect());
     }
+
+    const onContextMenu = e => {
+        e.preventDefault()
+        setIsEditing(true);
+        calculatePosition();
+    }
+
 
     // Drag'n'drop
     const dragItemNode = useRef();
@@ -83,15 +85,16 @@ const Card = ({ listId, cardId, card }) => {
         <div draggable={!isEditing}
             onDragStart={e => handleDragStart(e, cardId, listId)}
             onDragEnter={!firstRender && dragging ? e => handleDragEnter(e, cardId, listId) : null}
+            onContextMenu={onContextMenu}
         >
 
             <div
-                onContextMenu={calculatePosition}
+
                 ref={cardRef}
                 className={'Card'}
                 style={dragging ? getStyle(cardId, listId) : {}}>
 
-                <Link draggable={false} style={{ width: '100%', height: '100%' }} onContextMenu={onContextMenu} className={'Link-normalize'} to={`${listId}/${cardId}`}>
+                <Link draggable={false} style={{ width: '100%', height: '100%' }} className={'Link-normalize'} to={`${listId}/${cardId}`}>
                     <div style={dragging ? getStyle(cardId, listId) : {}}>
                         {card.title}
                     </div>

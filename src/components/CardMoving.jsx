@@ -25,18 +25,10 @@ const CardMoving = ({
 
     const moveCard = e => {
         e.preventDefault();
-        let correct = 0;
-        if (listId == listNumber && boardId == boardNumber && Number(position) >= cardId) {
-            correct = 1;
-            if (cardId == Number(position)) correct = 2;
-        }
-        console.log('correct', correct);
-        console.log(position);
-        console.log(cardId)
         dispatch(doMoveCard({
             destBoardId: boardNumber,
             destListId: listNumber,
-            destCardId: Number(position) + correct,
+            destCardId: position,
             srcBoardId: boardId,
             srcListId: listId,
             srcCardId: cardId,

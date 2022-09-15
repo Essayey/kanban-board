@@ -11,9 +11,12 @@ const Sidebar = ({ boards }) => {
                 </div>
                 <div className="Sidebar__boards">
                     {boards.map((board, index) =>
-                        <Link to={`boards/${index}`} key={board + index}>
-                            {board} <br />
-                        </Link>
+                        <div className="Sidebar__link">
+                            <Link to={`boards/${index}`} key={board + index}>
+                                {board} <br />
+                            </Link>
+                        </div>
+
                     )}
                 </div>
             </div>

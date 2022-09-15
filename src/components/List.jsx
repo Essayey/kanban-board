@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { doAddCard, doDeleteList, doMoveCard, doRenameList } from '../store';
+import { doAddCard, doDeleteList, doMoveCard, doRenameList, doWriteDropSrc } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 import Card from './Card';
 import TextareaForm from './TextareaForm';
@@ -40,9 +40,25 @@ const List = ({ cards, listName, listId }) => {
     const addCard = text => {
         dispatch(doAddCard({ boardId: boardId, listId, text }));
     }
+    // D'n'd
+    const { srcCardId, srcListId } = useSelector(state => state.dropCardState);
+    const handleDragEnter = e => {
+        dispatch(doMoveCard({
+            srcBoardId: boardId,
+            destBoardId: boardId,
+            srcListId: srcListId,
+            destListId: listId,
+            srcCardId: srcCardId,
+            destCardId: 0
+        }))
+        dispatch(doWriteDropSrc({ cardId: 0, listId }));
+    }
 
     return (
-        <div className='List' draggable='false'>
+        <div
+            onDragEnter={cards.length === 0 ? e => handleDragEnter(e) : null}
+            className='List'
+            draggable='false'>
             {isListRenaming
                 ? <form ref={renameFormRef} onSubmit={onSubmit}>
                     <input

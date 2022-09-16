@@ -11,8 +11,8 @@ const Sidebar = ({ boards }) => {
                 </div>
                 <div className="Sidebar__boards">
                     {boards.map((board, index) =>
-                        <div className="Sidebar__link">
-                            <Link to={`boards/${index}`} key={board + index}>
+                        <div className="Sidebar__link" key={board + index}>
+                            <Link to={`boards/${index}`}>
                                 {board} <br />
                             </Link>
                         </div>

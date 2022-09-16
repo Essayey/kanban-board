@@ -16,6 +16,7 @@ const EDIT_CARD_DESCRIPTION = 'EDIT_CARD_DESCRIPTION';
 const DELETE_CARD = 'DELETE_CARD';
 const INSERT_CARD = 'INSERT_CARD';
 const MOVE_CARD = 'MOVE_CARD';
+const MOVE_LIST = 'MOVE_LIST';
 
 const WRITE_DROP_SRC = 'WRITE_DROP_SRC';
 const WRITE_DROP_DEST = 'WRITE_DROP_DEST';
@@ -100,6 +101,10 @@ const boardReducer = createReducer(initialState, builder => {
         }
         srcCards.splice(action.payload.srcCardId, 1);
     })
+    builder.addCase(MOVE_LIST, (state, action) => {
+        const board = state.boards[action.payload.boardId].lists;
+        board.splice(action.payload.destListId, 0, board.splice(action.payload.srcListId, 1)[0]);
+    })
 
 
     builder.addCase(SET_DRAGGING, (state, action) => {
@@ -109,6 +114,7 @@ const boardReducer = createReducer(initialState, builder => {
         state.dropCardState.srcCardId = action.payload.cardId;
         state.dropCardState.srcListId = action.payload.listId;
     })
+
 })
 
 
@@ -161,4 +167,8 @@ export const doWriteDropDest = payload => {
 
 export const doSetDragging = payload => {
     return { type: SET_DRAGGING, payload }
+}
+
+export const doMoveList = payload => {
+    return { type: MOVE_LIST, payload }
 }

@@ -25,6 +25,8 @@ const Board = () => {
 
     const [dragging, setDragging] = useState(false);
 
+
+
     const handleDragStart = (e, listId) => {
         if (e.target.className !== 'List') return;
         dragItemNode.current = e.target;
@@ -63,7 +65,9 @@ const Board = () => {
         <div className='Board'>
             <div className='Board__inner'>
                 {board.lists.map((list, index) =>
-                    <List key={list.listName + index}
+                    <List
+                        draggable
+                        key={list.listName + index}
                         cards={list.cards}
                         listName={list.listName}
                         listId={index}

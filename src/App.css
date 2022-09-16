@@ -230,7 +230,7 @@ select:active {
 }
 
 .Card:hover {
-  background-color: #e2e8e4;
+  background-color: #ffffff22;
   cursor: pointer;
 }
 
@@ -241,7 +241,7 @@ select:active {
 }
 
 .CardAdd:hover {
-  background-color: #d2d8d4;
+  background-color: #aaaaaa44;
   cursor: pointer;
 }
 

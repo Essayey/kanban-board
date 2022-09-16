@@ -7,7 +7,7 @@ import { useOutsideCallback } from '../hooks/useOutsideCallback';
 import { useEscapeCallback } from '../hooks/useEscapeCallback';
 import { useParams } from 'react-router-dom';
 
-const List = ({ cards, listName, listId }) => {
+const List = ({ cards, listName, listId, onDragStart, style, onDragEnter }) => {
     const dispatch = useDispatch();
 
     let { boardId } = useParams();
@@ -41,8 +41,10 @@ const List = ({ cards, listName, listId }) => {
         dispatch(doAddCard({ boardId: boardId, listId, text }));
     }
     // D'n'd
-    const { srcCardId, srcListId } = useSelector(state => state.dropCardState);
-    const handleDragEnter = e => {
+    const { srcCardId, srcListId, dragging } = useSelector(state => state.dropCardState);
+
+
+    const handleCardDragEnter = e => {
         dispatch(doMoveCard({
             srcBoardId: boardId,
             destBoardId: boardId,
@@ -56,9 +58,11 @@ const List = ({ cards, listName, listId }) => {
 
     return (
         <div
-            onDragEnter={cards.length === 0 ? e => handleDragEnter(e) : null}
+            onDragEnter={cards.length === 0 && dragging ? e => handleCardDragEnter(e) : onDragEnter}
+            onDragStart={onDragStart}
             className='List'
-            draggable='false'>
+            draggable='true'
+            style={style}>
             {isListRenaming
                 ? <form ref={renameFormRef} onSubmit={onSubmit}>
                     <input
